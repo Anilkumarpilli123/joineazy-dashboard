@@ -54,6 +54,4 @@ The dashboard is composed of modular, reusable UI components:
 -> Sidebar: Navigation area to switch dashboard views.
 -> AssignmentList / Card: Display assignments dynamically based on user role.
 -> CreateAssignmentForm: Used by admins to add new tasks.
--> ProgressBar: Shows assignment completion visually.
-
-                   ---END---
+-> ProgressBar: Shows assignment completion visually. 
