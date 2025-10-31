@@ -47,7 +47,7 @@ The App.jsx dynamically renders either the AdminDashboard or StudentDashboard ba
 
 All data (assignments and user state) is persisted in localStorage to maintain state across refreshes.
 
-### Component Composition
+## Component Composition
 
 The dashboard is composed of modular, reusable UI components:
 
