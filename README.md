@@ -56,4 +56,4 @@ The dashboard is composed of modular, reusable UI components:
 -> CreateAssignmentForm: Used by admins to add new tasks.
 -> ProgressBar: Shows assignment completion visually.
 
----END---
+                   ---END---
