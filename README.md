@@ -12,15 +12,13 @@ This dashboard provides role-based views for **students** and **admins**, enabli
 - **Styling:** Tailwind CSS
 - **State Management:** React Context API
 - **Storage:** LocalStorage (for persistence)
-- **Deployment:** GitHub Pages / Netlify
+- **Deployment:** Netlify
 
 ---
 
 ## Live Demo 
 
  **Netlify Deployment:** [https://joineazy-dashboard.netlify.app/](https://joineazy-dashboard.netlify.app/) 
- 
- **GitHub Pages:** [https://anilkumarpilli123.github.io/joineazy-dashboard/](https://anilkumarpilli123.github.io/joineazy-dashboard/)  
 
 ---
 
