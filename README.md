@@ -26,7 +26,7 @@ This dashboard provides role-based views for **students** and **admins**, enabli
 
 ## Project Setup Instructions
 
-### 1️ Clone the Repository
+### Clone the Repository
 ```bash
 git clone https://github.com/Anilkumarpilli123/joineazy-dashboard.git
 cd joineazy-dashboard
