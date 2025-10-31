@@ -38,8 +38,8 @@ cd joineazy-dashboard
 # Role-Based Rendering
 
 The app uses the Context API (UserContext.jsx) to manage the current user and their role (student or admin).
--> Admin: Can create new assignments and view student submissions.
--> Student: Can view assigned tasks, mark them as submitted, and track completion.
+- **Admin:** Can create new assignments and view student submissions.
+- **Student:** Can view assigned tasks, mark them as submitted, and track completion.
 
 The App.jsx dynamically renders either the AdminDashboard or StudentDashboard based on the active user role.
 
@@ -50,8 +50,9 @@ All data (assignments and user state) is persisted in localStorage to maintain s
 ### Component Composition
 
 The dashboard is composed of modular, reusable UI components:
--> Navbar: Central role & user switcher with student/admin dropdowns.
--> Sidebar: Navigation area to switch dashboard views.
--> AssignmentList / Card: Display assignments dynamically based on user role.
--> CreateAssignmentForm: Used by admins to add new tasks.
--> ProgressBar: Shows assignment completion visually. 
+
+- **Navbar:** Central role & user switcher with student/admin dropdowns.
+- **Sidebar:** Navigation area to switch dashboard views.
+- **AssignmentList / Card:** Display assignments dynamically based on user role.
+- **CreateAssignmentForm:** Used by admins to add new tasks.
+- **ProgressBar:** Shows assignment completion visually. 
