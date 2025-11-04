@@ -4,16 +4,25 @@ import { users as seededUsers } from "../data/mockData";
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
-  const [users, setUsers] = useState(seededUsers);
+  const [users, setUsers] = useState(() => {
+    const saved = localStorage.getItem("joineazy_users");
+    return saved ? JSON.parse(saved) : seededUsers;
+  });
+
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem("joineazy_current_user");
-    return saved ? JSON.parse(saved) : null; 
+    return saved ? JSON.parse(saved) : null; // ✅ Start with null, not seededUsers[0]
   });
 
   useEffect(() => {
-    if (currentUser) {
+    localStorage.setItem("joineazy_users", JSON.stringify(users));
+  }, [users]);
+
+  useEffect(() => {
+    if (currentUser)
       localStorage.setItem("joineazy_current_user", JSON.stringify(currentUser));
-    }
+    else
+      localStorage.removeItem("joineazy_current_user"); // ✅ clear when logged out
   }, [currentUser]);
 
   const switchRole = (role) => {
@@ -22,7 +31,9 @@ export function UserProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ users, setUsers, currentUser, setCurrentUser, switchRole }}>
+    <UserContext.Provider
+      value={{ users, setUsers, currentUser, setCurrentUser, switchRole }}
+    >
       {children}
     </UserContext.Provider>
   );
