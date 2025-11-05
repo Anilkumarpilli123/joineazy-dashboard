@@ -63,6 +63,4 @@ The dashboard follows a modular structure for clarity and scalability:
 - **StudentDashboard:** Displays assignments, submission status, and OneDrive links.
 - **GroupModal:** Enables students to create or join groups dynamically.
 - **UserContext:** Handles global user authentication and role switching.
-
-
-![image alt]("C:\Users\anilk\Videos\2025-11-01 18-56-23.mp4")
+ 
