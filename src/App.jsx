@@ -9,25 +9,42 @@ import Sidebar from "./components/Sidebar";
 import StudentDashboard from "./pages/StudentDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AuthPage from "./pages/AuthPage";
-import { users as seededUsers } from "./data/mockData"; // ✅ only users kept, no assignments
+import { users as seededUsers } from "./data/mockData";
 
 function AppInner() {
   const { currentUser } = useContext(UserContext);
 
-  // 🧠 Start with an empty assignment list
   const [assignments, setAssignments] = useState(() => {
     const saved = localStorage.getItem("joineazy_assignments");
-    return saved ? JSON.parse(saved) : []; // 👈 empty by default
+    return saved ? JSON.parse(saved) : []; 
   });
 
   const [active, setActive] = useState("dashboard");
 
-  // 💾 Save assignments whenever they change
   useEffect(() => {
     localStorage.setItem("joineazy_assignments", JSON.stringify(assignments));
   }, [assignments]);
 
-  // ✅ Remove mockData init logic completely
+  useEffect(() => {
+  const updatedAssignments = assignments.map(a => ({
+    ...a,
+    submissions:
+      a.submissions && a.submissions.length > 0
+        ? a.submissions
+        : seededUsers
+            .filter(u => u.role === "student")
+            .map(s => ({
+              studentId: s.id,
+              acknowledged: false,
+              timestamp: null,
+            })),
+    groups: a.groups || [],
+  }));
+
+  setAssignments(updatedAssignments);
+}, []); // 👈 this runs right after render
+
+
 
   if (!currentUser) return <Navigate to="/auth" replace />;
 

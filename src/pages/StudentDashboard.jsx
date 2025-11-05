@@ -8,60 +8,78 @@ export default function StudentDashboard({ assignments, setAssignments }) {
   const [activeAssignment, setActiveAssignment] = useState(null);
   const [expandedGroup, setExpandedGroup] = useState(null);
 
-  // Acknowledge Submission Logic
-  const handleAcknowledge = (assignmentId) => {
-    let acknowledged = false;
+  // 🧩 Handle acknowledgment
+  // ✅ Prevent double toast using a state guard
+const handleAcknowledge = (assignmentId) => {
+  let toastShown = false; // 🔹 Prevent multiple toasts
 
-    setAssignments((prevAssignments) => {
-      const updatedAssignments = prevAssignments.map((a) => {
-        if (a.id !== assignmentId) return a;
+  setAssignments((prevAssignments) => {
+    const updatedAssignments = prevAssignments.map((a) => {
+      if (a.id !== assignmentId) return a;
 
-        const submissions = a.submissions || [];
+      const submissions = a.submissions || [];
 
-        // Individual
-        if (a.submissionType === "individual") {
-          acknowledged = true;
-          const updatedSubmissions = submissions.map((s) =>
-            s.studentId === currentUser.id
-              ? { ...s, acknowledged: true, timestamp: new Date().toISOString() }
-              : s
-          );
-          return { ...a, submissions: updatedSubmissions };
+      // INDIVIDUAL
+      if (a.submissionType === "individual") {
+        const updatedSubmissions = submissions.map((s) =>
+          s.studentId === currentUser.id
+            ? { ...s, acknowledged: true, timestamp: new Date().toISOString() }
+            : s
+        );
+
+        if (!toastShown) {
+          toast.success("Acknowledgment submitted!");
+          toastShown = true;
         }
 
-        // Group
-        if (a.submissionType === "group") {
-          const group = a.groups?.find((g) => g.members.includes(currentUser.id));
-          if (!group) {
+        return { ...a, submissions: updatedSubmissions };
+      }
+
+      // GROUP
+      if (a.submissionType === "group") {
+        const group = a.groups?.find((g) => g.members.includes(currentUser.id));
+        if (!group) {
+          if (!toastShown) {
             toast.info("You are not part of any group. Form or join one to submit this assignment.");
-            return a;
+            toastShown = true;
           }
-          if (group.leaderId !== currentUser.id) {
-            toast.warn("Only the group leader can acknowledge submission.");
-            return a;
-          }
-
-          acknowledged = true;
-          const updatedSubmissions = submissions.map((s) =>
-            group.members.includes(s.studentId)
-              ? { ...s, acknowledged: true, timestamp: new Date().toISOString() }
-              : s
-          );
-          return { ...a, submissions: updatedSubmissions };
+          return a;
         }
 
-        return a;
-      });
+        if (group.leaderId !== currentUser.id) {
+          if (!toastShown) {
+            toast.warn("Only the group leader can acknowledge submission.");
+            toastShown = true;
+          }
+          return a;
+        }
 
-      localStorage.setItem("joineazy_assignments", JSON.stringify(updatedAssignments));
-      return updatedAssignments;
+        const updatedSubmissions = submissions.map((s) =>
+          group.members.includes(s.studentId)
+            ? { ...s, acknowledged: true, timestamp: new Date().toISOString() }
+            : s
+        );
+
+        if (!toastShown) {
+          toast.success("Acknowledgment submitted!");
+          toastShown = true;
+        }
+
+        return { ...a, submissions: updatedSubmissions };
+      }
+
+      return a;
     });
 
-    setTimeout(() => {
-      if (acknowledged) toast.success("Acknowledgment submitted!");
-    }, 100);
-  };
+    // ✅ Update localStorage once (not triggering another re-render)
+    localStorage.setItem("joineazy_assignments", JSON.stringify(updatedAssignments));
 
+    return updatedAssignments;
+  });
+};
+
+
+  // 🔍 Helpers
   const getStudentName = (id) => users.find((u) => u.id === id)?.name || "Unknown";
 
   const getProgressPercent = (a) => {
@@ -70,11 +88,11 @@ export default function StudentDashboard({ assignments, setAssignments }) {
     return Math.round((acknowledged / total) * 100);
   };
 
+  // 🧠 Render
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Student Dashboard</h2>
 
-      {/* No Assignments Message */}
       {assignments.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-lg shadow-sm border border-gray-200">
           <p className="text-gray-600 text-lg font-medium">
@@ -97,7 +115,6 @@ export default function StudentDashboard({ assignments, setAssignments }) {
           const currentGroup = a.groups?.find((g) =>
             g.members.includes(currentUser.id)
           );
-
           const progress = getProgressPercent(a);
 
           return (
@@ -105,12 +122,14 @@ export default function StudentDashboard({ assignments, setAssignments }) {
               key={a.id}
               className="bg-white shadow-md rounded-lg p-5 mb-5 transition-all duration-200 hover:shadow-lg"
             >
+              {/* Header */}
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800">
                     {a.title}
                   </h3>
                   <p className="text-sm text-gray-600">{a.description}</p>
+
                   <p className="text-sm text-gray-500 mt-1">
                     Submission Type:{" "}
                     <span className="font-medium text-blue-700">
@@ -127,7 +146,8 @@ export default function StudentDashboard({ assignments, setAssignments }) {
                     </p>
                   )}
 
-                  {a.driveLink && (
+                  {/* 📁 OneDrive Link */}
+                  {a.driveLink ? (
                     <p className="mt-2">
                       <a
                         href={a.driveLink}
@@ -135,12 +155,16 @@ export default function StudentDashboard({ assignments, setAssignments }) {
                         rel="noopener noreferrer"
                         className="text-blue-600 text-sm underline hover:text-blue-800"
                       >
-                        Open Drive Folder
+                        Open OneDrive Submission Folder
                       </a>
+                    </p>
+                  ) : (
+                    <p className="text-gray-500 text-sm mt-2 italic">
+                      No OneDrive link provided
                     </p>
                   )}
 
-                  {/* Group Info */}
+                  {/* 👥 Group Info */}
                   {a.submissionType === "group" && currentGroup && (
                     <div className="mt-3 border-t pt-2">
                       <p className="text-sm font-medium text-gray-700">
@@ -153,18 +177,50 @@ export default function StudentDashboard({ assignments, setAssignments }) {
                   )}
                 </div>
 
+                {/* Right Section */}
                 <div className="flex flex-col items-end gap-2 mt-4 md:mt-0">
+
+                  {a.submissionType === "group" && (
+    <>
+      {!currentGroup ? (
+        <button
+          onClick={() => setActiveAssignment(a)}
+          className="text-sm bg-gray-100 px-3 py-1 rounded-md border hover:bg-gray-200 transition"
+        >
+          Form / Join Group
+        </button>
+      ) : (
+        <p className="text-sm text-gray-600 italic">
+          You are part of{" "}
+          <span className="font-medium text-blue-700">
+            {currentGroup.name || currentGroup.groupId}
+          </span>
+        </p>
+      )}
+    </>
+  )}
+                
                   {isAcknowledged ? (
-                    <p className="text-green-600 text-sm font-medium">
-                      Acknowledged on {time}
-                    </p>
+                    <>
+                      <p className="text-green-600 text-sm font-medium">
+                        ✅ Acknowledged on {time}
+                      </p>
+                      <span className="text-xs text-green-700 bg-green-100 px-2 py-1 rounded-md">
+                        Acknowledged
+                      </span>
+                    </>
                   ) : (
-                    <button
-                      onClick={() => handleAcknowledge(a.id)}
-                      className="bg-blue-600 text-white text-sm px-4 py-1.5 rounded-md hover:bg-blue-700 transition"
-                    >
-                      Yes, I have submitted
-                    </button>
+                    <>
+                      <button
+                        onClick={() => handleAcknowledge(a.id)}
+                        className="bg-blue-600 text-white text-sm px-4 py-1.5 rounded-md hover:bg-blue-700 transition"
+                      >
+                        Yes, I have submitted
+                      </button>
+                      <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+                        Pending Acknowledgment
+                      </span>
+                    </>
                   )}
                 </div>
               </div>
@@ -187,6 +243,7 @@ export default function StudentDashboard({ assignments, setAssignments }) {
         })
       )}
 
+      {/* Group Modal */}
       {activeAssignment && (
         <GroupModal
           assignment={activeAssignment}

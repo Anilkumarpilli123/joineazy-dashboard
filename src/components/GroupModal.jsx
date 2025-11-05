@@ -29,7 +29,7 @@ export default function GroupModal({ assignment, onClose, onUpdateAssignment }) 
       groups: [...(assignment.groups || []), newGroup],
     });
 
-    toast.success(`✅ Group '${groupName}' created successfully!`);
+    toast.success(`Group '${groupName}' created successfully!`);
     onClose();
   };
 
@@ -66,7 +66,7 @@ export default function GroupModal({ assignment, onClose, onUpdateAssignment }) 
     };
 
     onUpdateAssignment(updatedAssignment);
-    toast.success("✅ Joined group successfully!");
+    toast.success("Joined group successfully!");
     onClose();
   };
 

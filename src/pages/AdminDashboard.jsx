@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 
 export default function AdminDashboard({ assignments, setAssignments }) {
   const { users } = useContext(UserContext);
-  const [expanded, setExpanded] = useState(null);
   const [editId, setEditId] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
@@ -16,12 +15,12 @@ export default function AdminDashboard({ assignments, setAssignments }) {
     submissionType: "individual",
   });
 
-  // Add new assignment
+  // ✅ Add new assignment
   const handleAddAssignment = (e) => {
     e.preventDefault();
     const { title, description, deadline, driveLink, submissionType } = newAssignment;
 
-    if (!title.trim() || !description.trim() || !deadline.trim() ) {
+    if (!title.trim() || !description.trim() || !deadline.trim()) {
       toast.error("Please fill in all fields!");
       return;
     }
@@ -57,25 +56,25 @@ export default function AdminDashboard({ assignments, setAssignments }) {
     toast.success("Assignment created successfully!");
   };
 
-  // Edit assignment
+  // ✅ Edit assignment
   const handleEdit = (id, updated) => {
     setAssignments((prev) => prev.map((a) => (a.id === id ? { ...a, ...updated } : a)));
     setEditId(null);
     toast.success("Assignment updated successfully!");
   };
 
-  // Delete assignment
+  // ✅ Delete assignment
   const handleDelete = (id) => {
     setAssignments((prev) => prev.filter((a) => a.id !== id));
     setConfirmDeleteId(null);
     toast.error("Assignment deleted");
   };
 
-  // Helper: Get student name
+  // ✅ Helper: Get student name
   const getStudentName = (id) =>
     users.find((u) => u.id === id)?.name || "Unknown";
 
-  // Helper: Calculate submission stats
+  // ✅ Helper: Calculate submission stats
   const getSubmissionStats = (a) => {
     const total = a.submissions?.length || 0;
     const submitted = a.submissions?.filter((s) => s.acknowledged).length || 0;
@@ -87,7 +86,7 @@ export default function AdminDashboard({ assignments, setAssignments }) {
     <div className="space-y-8">
       <h2 className="text-2xl font-bold text-gray-800">Professor Dashboard</h2>
 
-      {/* Create Assignment */}
+      {/* 🧩 Create Assignment */}
       <div className="bg-white shadow-md rounded-lg p-5 border border-gray-100">
         <h3 className="text-lg font-semibold text-blue-700 mb-3">
           Create New Assignment
@@ -169,108 +168,159 @@ export default function AdminDashboard({ assignments, setAssignments }) {
         </form>
       </div>
 
-      {/* Assignment List */}
-      {assignments.map((a) => {
-        const { total, submitted, percent } = getSubmissionStats(a);
-        return (
-          <div
-            key={a.id}
-            className="bg-white shadow rounded-lg p-5 border border-gray-100"
-          >
-            {editId === a.id ? (
-              <EditAssignmentForm
-                assignment={a}
-                onSave={(updated) => handleEdit(a.id, updated)}
-                onCancel={() => setEditId(null)}
-              />
-            ) : (
-              <>
-                <div className="flex flex-col md:flex-row justify-between gap-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-700">{a.title}</h3>
-                    <p className="text-sm text-gray-600">{a.description}</p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Deadline:{" "}
-                      <span className="font-medium text-red-600">
-                        {new Date(a.deadline).toLocaleString()}
-                      </span>
-                    </p>
-
-                    <a
-                      href={a.driveLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-blue-600 underline mt-1 block"
-                    >
-                      Open Drive Folder
-                    </a>
-
-                    <div className="mt-2">
-                      <div className="w-full bg-gray-200 h-2 rounded-full">
-                        <div
-                          className="bg-green-500 h-2 rounded-full"
-                          style={{ width: `${percent}%` }}
-                        ></div>
-                      </div>
-                      <p className="text-xs text-gray-600 mt-1">
-                        {submitted}/{total} submissions ({percent}%)
+      {/* 📋 Assignment List */}
+      {assignments.length === 0 ? (
+        <p className="text-gray-500 text-center">No assignments created yet.</p>
+      ) : (
+        assignments.map((a) => {
+          const { total, submitted, percent } = getSubmissionStats(a);
+          return (
+            <div
+              key={a.id}
+              className="bg-white shadow rounded-lg p-5 border border-gray-100"
+            >
+              {editId === a.id ? (
+                <EditAssignmentForm
+                  assignment={a}
+                  onSave={(updated) => handleEdit(a.id, updated)}
+                  onCancel={() => setEditId(null)}
+                />
+              ) : (
+                <>
+                  <div className="flex flex-col md:flex-row justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-700">{a.title}</h3>
+                      <p className="text-sm text-gray-600">{a.description}</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Deadline:{" "}
+                        <span className="font-medium text-red-600">
+                          {new Date(a.deadline).toLocaleString()}
+                        </span>
                       </p>
+
+                      {/* ✅ Show OneDrive Link */}
+                      {a.driveLink && (
+                        <a
+                          href={a.driveLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 underline mt-1 block"
+                        >
+                          Open OneDrive / Drive Folder
+                        </a>
+                      )}
+
+                      {/* ✅ Show Submission Type */}
+                      <p className="text-sm text-gray-700 mt-1">
+                        Submission Type:{" "}
+                        <span className="font-medium text-blue-700 capitalize">
+                          {a.submissionType}
+                        </span>
+                      </p>
+
+                      {/* ✅ Progress bar */}
+                      <div className="mt-2">
+                        <div className="w-full bg-gray-200 h-2 rounded-full">
+                          <div
+                            className="bg-green-500 h-2 rounded-full"
+                            style={{ width: `${percent}%` }}
+                          ></div>
+                        </div>
+                        <p className="text-xs text-gray-600 mt-1">
+                          {submitted}/{total} submissions ({percent}%)
+                        </p>
+                      </div>
+
+                      {/* ✅ Group Info */}
+                      {a.submissionType === "group" && a.groups?.length > 0 && (
+                        <div className="mt-4 bg-blue-50 border border-blue-200 rounded-md p-3">
+                          <p className="font-semibold text-blue-700 text-sm mb-2">
+                            Groups Created:
+                          </p>
+                          {a.groups.map((g) => (
+                            <div
+                              key={g.groupId}
+                              className="mb-2 border-b border-blue-100 pb-2 last:border-none"
+                            >
+                              <p className="text-sm font-medium text-gray-800">
+                                {g.name}{" "}
+                                <span className="text-xs text-gray-500">
+                                  (ID: {g.groupId})
+                                </span>
+                              </p>
+                              <ul className="ml-4 text-sm text-gray-700 list-disc">
+                                {g.members.map((id) => (
+                                  <li key={id}>
+                                    {getStudentName(id)}{" "}
+                                    {id === g.leaderId && (
+                                      <span className="text-xs text-blue-600 font-medium">
+                                        (Leader)
+                                      </span>
+                                    )}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Edit & Delete buttons */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setEditId(a.id)}
+                        className="text-sm bg-yellow-100 text-yellow-700 px-2 py-1 rounded-md hover:bg-yellow-200"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => setConfirmDeleteId(a.id)}
+                        className="text-sm bg-red-100 text-red-600 px-2 py-1 rounded-md hover:bg-red-200"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
+                </>
+              )}
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setEditId(a.id)}
-                      className="text-sm bg-yellow-100 text-yellow-700 px-2 py-1 rounded-md hover:bg-yellow-200"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => setConfirmDeleteId(a.id)}
-                      className="text-sm bg-red-100 text-red-600 px-2 py-1 rounded-md hover:bg-red-200"
-                    >
-                      Delete
-                    </button>
+              {/* Delete Confirmation */}
+              {confirmDeleteId === a.id && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+                  <div className="bg-white rounded-lg shadow-lg p-5 w-80">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                      Confirm Delete
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Are you sure you want to delete "{a.title}"?
+                    </p>
+                    <div className="flex justify-end gap-2">
+                      <button
+                        onClick={() => setConfirmDeleteId(null)}
+                        className="px-3 py-1 border rounded-md text-sm"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => handleDelete(a.id)}
+                        className="px-3 py-1 bg-red-600 text-white text-sm rounded-md hover:bg-red-700"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </>
-            )}
-
-            {/* Delete Confirmation */}
-            {confirmDeleteId === a.id && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-                <div className="bg-white rounded-lg shadow-lg p-5 w-80">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                    Confirm Delete
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Are you sure you want to delete "{a.title}"?
-                  </p>
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => setConfirmDeleteId(null)}
-                      className="px-3 py-1 border rounded-md text-sm"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={() => handleDelete(a.id)}
-                      className="px-3 py-1 bg-red-600 text-white text-sm rounded-md hover:bg-red-700"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        );
-      })}
+              )}
+            </div>
+          );
+        })
+      )}
     </div>
   );
 }
 
-// Inline Edit Form
+// ✏️ Inline Edit Form
 function EditAssignmentForm({ assignment, onSave, onCancel }) {
   const [form, setForm] = useState({
     title: assignment.title,
