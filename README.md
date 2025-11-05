@@ -37,8 +37,15 @@ cd joineazy-dashboard
 
 The app uses the Context API (UserContext.jsx) to manage the current user and their role (student or admin).
 - **Admin(Professor):**
-- Can create new assignments and view student submissions.
-- **Student:** Can view assigned tasks, mark them as submitted, and track completion.
+     - Can create, edit, and delete assignments.
+     - Can view student acknowledgments and submission progress.
+     - For group assignments, can view group names, group IDs, and group members.
+       
+- **Student:**
+     - Can view all assignments created by the admin.
+     - Can acknowledge submission (“Yes, I have submitted”).
+     - Can form or join groups for group-type assignments.
+     - Sees timestamped acknowledgment updates once submitted.
 
 The App.jsx dynamically renders either the AdminDashboard or StudentDashboard based on the active user role.
 
@@ -48,10 +55,13 @@ All data (assignments and user state) is persisted in localStorage to maintain s
 
 ## Component Composition
 
-The dashboard is composed of modular, reusable UI components:
+The dashboard follows a modular structure for clarity and scalability:
 
-- **Navbar:** Central role & user switcher with student/admin dropdowns.
-- **Sidebar:** Navigation area to switch dashboard views.
-- **AssignmentList / Card:** Display assignments dynamically based on user role.
-- **CreateAssignmentForm:** Used by admins to add new tasks.
-- **ProgressBar:** Shows assignment completion visually. 
+- **Navbar:** Provides role switch and logout options.
+- **Sidebar:** Simplified navigation for dashboard pages.
+- **AdminDashboard:** Allows creating, editing, and managing assignments and viewing progress.
+- **StudentDashboard:** Displays assignments, submission status, and OneDrive links.
+- **GroupModal:** Enables students to create or join groups dynamically.
+- **UserContext:** Handles global user authentication and role switching.
+
+
