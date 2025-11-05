@@ -65,3 +65,4 @@ The dashboard follows a modular structure for clarity and scalability:
 - **UserContext:** Handles global user authentication and role switching.
 
 
+![image alt]("C:\Users\anilk\Videos\2025-11-01 18-56-23.mp4")
