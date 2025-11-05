@@ -74,7 +74,7 @@ export default function StudentDashboard({ assignments, setAssignments }) {
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Student Dashboard</h2>
 
-      {/* 🧩 No Assignments Message */}
+      {/* No Assignments Message */}
       {assignments.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-lg shadow-sm border border-gray-200">
           <p className="text-gray-600 text-lg font-medium">
