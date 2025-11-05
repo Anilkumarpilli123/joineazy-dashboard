@@ -29,31 +29,26 @@ export const users = [
   },
 ];
 
-// ✅ Default assignments
+// Default assignments
 export const initialAssignments = [
   {
     id: 1,
     title: "Frontend Dashboard UI",
     description: "Build a dashboard using React + Tailwind CSS.",
+    deadline: "2025-11-15T23:59:00", // 🕒 Added deadline
+    driveLink: "https://drive.google.com/drive/folders/frontend-dashboard-ui", // 📁 Added drive folder
     submissionType: "individual",
-    submissions: [
-      { studentId: 1, acknowledged: false, timestamp: null },
-      { studentId: 2, acknowledged: false, timestamp: null },
-      { studentId: 3, acknowledged: false, timestamp: null },
-    ],
+    submissions: [],
     groups: [],
   },
   {
     id: 2,
     title: "Team Portfolio Project",
-    description:
-      "Work in a group to create a responsive team portfolio website.",
+    description: "Work in a group to create a responsive team portfolio website.",
+    deadline: "2025-11-20T23:59:00", // 🕒 Added deadline
+    driveLink: "https://drive.google.com/drive/folders/team-portfolio-project", // 📁 Added drive folder
     submissionType: "group",
-    submissions: [
-      { studentId: 1, acknowledged: false, timestamp: null },
-      { studentId: 2, acknowledged: false, timestamp: null },
-      { studentId: 3, acknowledged: false, timestamp: null },
-    ],
+    submissions: [],
     groups: [
       {
         groupId: "G1001",
@@ -73,12 +68,10 @@ export const initialAssignments = [
     id: 3,
     title: "React Mini Project",
     description: "Develop a small interactive project using React hooks.",
+    deadline: "2025-11-25T23:59:00", // 🕒 Added deadline
+    driveLink: "https://drive.google.com/drive/folders/react-mini-project", // 📁 Added drive folder
     submissionType: "individual",
-    submissions: [
-      { studentId: 1, acknowledged: true, timestamp: "2025-11-03T11:30:00Z" },
-      { studentId: 2, acknowledged: false, timestamp: null },
-      { studentId: 3, acknowledged: false, timestamp: null },
-    ],
+    submissions: [],
     groups: [],
   },
 ];

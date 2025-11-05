@@ -9,7 +9,7 @@ import Sidebar from "./components/Sidebar";
 import StudentDashboard from "./pages/StudentDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AuthPage from "./pages/AuthPage";
-import { initialAssignments } from "./data/mockData";
+import { initialAssignments, users as seededUsers } from "./data/mockData";
 
 function AppInner() {
   const { currentUser } = useContext(UserContext);
@@ -20,9 +20,35 @@ function AppInner() {
 
   const [active, setActive] = useState("dashboard");
 
+  // 🧠 save to localStorage whenever assignments change
   useEffect(() => {
     localStorage.setItem("joineazy_assignments", JSON.stringify(assignments));
   }, [assignments]);
+
+  // 🧩 Ensure all assignments have valid submissions + groups
+ useEffect(() => {
+  // Run this only once, after mount
+  const updatedAssignments = assignments.map(a => ({
+    ...a,
+    submissions:
+      a.submissions && a.submissions.length > 0
+        ? a.submissions
+        : seededUsers
+            .filter(u => u.role === "student")
+            .map(s => ({
+              studentId: s.id,
+              acknowledged: false,
+              timestamp: null,
+            })),
+    groups: a.groups || [],
+  }));
+
+  setAssignments(updatedAssignments);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []); // 👈 no dependencies so it runs only once
+
+
+
 
   if (!currentUser) return <Navigate to="/auth" replace />;
 
@@ -44,6 +70,7 @@ function AppInner() {
     </>
   );
 }
+
 
 export default function App() {
   return (
