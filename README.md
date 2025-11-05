@@ -36,7 +36,8 @@ cd joineazy-dashboard
 ## Role-Based Rendering
 
 The app uses the Context API (UserContext.jsx) to manage the current user and their role (student or admin).
-- **Admin(Professor):** Can create new assignments and view student submissions.
+- **Admin(Professor):**
+- Can create new assignments and view student submissions.
 - **Student:** Can view assigned tasks, mark them as submitted, and track completion.
 
 The App.jsx dynamically renders either the AdminDashboard or StudentDashboard based on the active user role.
