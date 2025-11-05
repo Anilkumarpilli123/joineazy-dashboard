@@ -1,8 +1,6 @@
 # Joineazy Dashboard
 
-A modern **React + Vite** dashboard application for managing student assignments and progress, built as part of the **Joineazy Internship Task-1**.
-
-This dashboard provides role-based views for **students** and **admins**, enabling easy tracking of assignments, submissions, and progress — all styled with **Tailwind CSS**.
+The Joineazy Dashboard is a modern React + Vite application built to streamline assignment management between professors and students. It provides a complete role-based interface for creating, submitting, and tracking academic assignments, including both individual and group submissions.
 
 ---
 
@@ -12,6 +10,8 @@ This dashboard provides role-based views for **students** and **admins**, enabli
 - **Styling:** Tailwind CSS
 - **State Management:** React Context API
 - **Storage:** LocalStorage (for persistence)
+- **Notifications:** React Toastify
+- **Animations:** Framer Motion
 - **Deployment:** Netlify
 
 ---
@@ -36,7 +36,7 @@ cd joineazy-dashboard
 ## Role-Based Rendering
 
 The app uses the Context API (UserContext.jsx) to manage the current user and their role (student or admin).
-- **Admin:** Can create new assignments and view student submissions.
+- **Admin(Professor):** Can create new assignments and view student submissions.
 - **Student:** Can view assigned tasks, mark them as submitted, and track completion.
 
 The App.jsx dynamically renders either the AdminDashboard or StudentDashboard based on the active user role.
