@@ -29,14 +29,14 @@ export const users = [
   },
 ];
 
-// Default assignments
+
 export const initialAssignments = [
   {
     id: 1,
     title: "Frontend Dashboard UI",
     description: "Build a dashboard using React + Tailwind CSS.",
-    deadline: "2025-11-15T23:59:00", // 🕒 Added deadline
-    driveLink: "https://drive.google.com/drive/folders/frontend-dashboard-ui", // 📁 Added drive folder
+    deadline: "2025-11-15T23:59:00", 
+    driveLink: "https://drive.google.com/drive/folders/frontend-dashboard-ui", 
     submissionType: "individual",
     submissions: [],
     groups: [],
@@ -45,8 +45,8 @@ export const initialAssignments = [
     id: 2,
     title: "Team Portfolio Project",
     description: "Work in a group to create a responsive team portfolio website.",
-    deadline: "2025-11-20T23:59:00", // 🕒 Added deadline
-    driveLink: "https://drive.google.com/drive/folders/team-portfolio-project", // 📁 Added drive folder
+    deadline: "2025-11-20T23:59:00", 
+    driveLink: "https://drive.google.com/drive/folders/team-portfolio-project", 
     submissionType: "group",
     submissions: [],
     groups: [
@@ -68,8 +68,8 @@ export const initialAssignments = [
     id: 3,
     title: "React Mini Project",
     description: "Develop a small interactive project using React hooks.",
-    deadline: "2025-11-25T23:59:00", // 🕒 Added deadline
-    driveLink: "https://drive.google.com/drive/folders/react-mini-project", // 📁 Added drive folder
+    deadline: "2025-11-25T23:59:00", 
+    driveLink: "https://drive.google.com/drive/folders/react-mini-project", 
     submissionType: "individual",
     submissions: [],
     groups: [],

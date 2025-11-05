@@ -16,7 +16,7 @@ export default function AdminDashboard({ assignments, setAssignments }) {
     submissionType: "individual",
   });
 
-  // 🧠 Add new assignment
+  // Add new assignment
   const handleAddAssignment = (e) => {
     e.preventDefault();
     const { title, description, deadline, driveLink, submissionType } = newAssignment;
@@ -57,25 +57,25 @@ export default function AdminDashboard({ assignments, setAssignments }) {
     toast.success("Assignment created successfully!");
   };
 
-  // ✏️ Edit assignment
+  // Edit assignment
   const handleEdit = (id, updated) => {
     setAssignments((prev) => prev.map((a) => (a.id === id ? { ...a, ...updated } : a)));
     setEditId(null);
     toast.success("Assignment updated successfully!");
   };
 
-  // ❌ Delete assignment
+  // Delete assignment
   const handleDelete = (id) => {
     setAssignments((prev) => prev.filter((a) => a.id !== id));
     setConfirmDeleteId(null);
     toast.error("Assignment deleted");
   };
 
-  // 🧾 Helper: Get student name
+  // Helper: Get student name
   const getStudentName = (id) =>
     users.find((u) => u.id === id)?.name || "Unknown";
 
-  // 📊 Helper: Calculate submission stats
+  // Helper: Calculate submission stats
   const getSubmissionStats = (a) => {
     const total = a.submissions?.length || 0;
     const submitted = a.submissions?.filter((s) => s.acknowledged).length || 0;
@@ -270,7 +270,7 @@ export default function AdminDashboard({ assignments, setAssignments }) {
   );
 }
 
-// ✏️ Inline Edit Form
+// Inline Edit Form
 function EditAssignmentForm({ assignment, onSave, onCancel }) {
   const [form, setForm] = useState({
     title: assignment.title,
