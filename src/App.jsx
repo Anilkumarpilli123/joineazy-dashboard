@@ -42,7 +42,7 @@ function AppInner() {
   }));
 
   setAssignments(updatedAssignments);
-}, []); // 👈 this runs right after render
+}, []);  
 
 
 

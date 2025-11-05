@@ -8,8 +8,7 @@
     const [activeAssignment, setActiveAssignment] = useState(null);
     const [expandedGroup, setExpandedGroup] = useState(null);
 
-    // 🧩 Handle acknowledgment
-    // ✅ Prevent double toast using a state guard
+    // Handle acknowledgment 
   const handleAcknowledge = (assignmentId) => {
     let toastShown = false; // 🔹 Prevent multiple toasts
 
@@ -71,7 +70,7 @@
         return a;
       });
 
-      // ✅ Update localStorage once (not triggering another re-render)
+      // Update localStorage once (not triggering another re-render)
       localStorage.setItem("joineazy_assignments", JSON.stringify(updatedAssignments));
 
       return updatedAssignments;
@@ -79,7 +78,7 @@
   };
 
 
-    // 🔍 Helpers
+    // Helpers
     const getStudentName = (id) => users.find((u) => u.id === id)?.name || "Unknown";
 
     const getProgressPercent = (a) => {
@@ -88,7 +87,7 @@
       return Math.round((acknowledged / total) * 100);
     };
 
-    // 🧠 Render
+    // Render
     return (
       <div>
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Student Dashboard</h2>
@@ -146,7 +145,7 @@
                       </p>
                     )}
 
-                    {/* 📁 OneDrive Link */}
+                    {/* OneDrive Link */}
                     {a.driveLink ? (
                       <p className="mt-2">
                         <a
@@ -164,7 +163,7 @@
                       </p>
                     )}
 
-                    {/* 👥 Group Info */}
+                    {/* Group Info */}
                     {a.submissionType === "group" && currentGroup && (
                       <div className="mt-3 border-t pt-2">
                         <p className="text-sm font-medium text-gray-700">
@@ -203,7 +202,7 @@
                     {isAcknowledged ? (
                       <>
                         <p className="text-green-600 text-sm font-medium">
-                          ✅ Acknowledged on {time}
+                          Acknowledged on {time}
                         </p>
                         <span className="text-xs text-green-700 bg-green-100 px-2 py-1 rounded-md">
                           Acknowledged
